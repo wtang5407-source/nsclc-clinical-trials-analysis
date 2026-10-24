@@ -5,7 +5,7 @@
 
 ## 🎯 分析目标
 - **趋势分析**：2019-2025年NSCLC临床试验的年度变化趋势与成功率演变
-- **阶段分布**：不同试验阶段（Phase 1/1/2/2/2/3/3）的分布特征与成功率差异
+- **阶段分布**：不同试验阶段（Phase 1/2/2/3）的分布特征与成功率差异
 - **竞争格局**：不同申办方类型（Big Pharma/Biotech/学术机构）的表现对比
 - **疗法热点**：靶向治疗、免疫治疗、联合疗法等策略的成功率分析
 - **规模效应**：入组规模与试验成功率的关联性研究
@@ -23,7 +23,7 @@
 - **语言**：Python 3.9.23
 - **数据处理**：Pandas, NumPy
 - **可视化**：Matplotlib, Seaborn
-- **开发环境**：Pytorch + Python脚本
+- **开发环境**：Python 脚本（Jupyter Notebook 可选）
 - **协作方式**：与AI协同完成需求拆解、代码生成与优化
 
 ## 📈 分析流程
@@ -37,6 +37,8 @@
 
 ### 发现一：临床试验成功率持续下滑，行业面临"效率危机"
 - **2019年成功率高达63.6%，2025年骤降至11.1%**，降幅超过80%
+
+> ⚠️ 方法学说明：2024–2025 年试验大多仍处于 Ongoing（尚未出结果），按年统计的"成功率"分母仅含已裁决试验，存在右删失（right-censoring）；近期数值下滑主要反映试验尚未成熟，而非真实趋势。更稳健的结论请参考下方截面维度（Phase 2/3 设计、入组规模、申办方类型）。
 - 59.9%的试验仍处于Ongoing状态，Failed率（14.3%）超过Completed率（10.9%）
 - **洞察**：随着PD-1/L1标准疗法确立，新药差异化空间被压缩，试验设计复杂度增加，导致成功率断崖式下跌
 
@@ -69,40 +71,38 @@
 - **洞察**："组合"不等于"成功"，单纯靶向治疗成功率远超联合疗法。建议联合方案基于明确生物学机制，避免盲目跟风"免疫+化疗"标准组合
 
 ## 📁 文件结构
-clinical-trials-analysis/
-├── README.md # 项目主页
-├── data/ # 数据文件夹
-│ ├── ctg-studies/ # 原始数据
-│ └── nsclc_cleaned/ # 清洗后数据
-├── scripts/ # Python脚本
-│ ├── 01_data_exploration.py
-│ ├── 02_data_cleaning.py
-│ └── 03_eda_analysis.py
-├── outputs/ # 输出文件
-│ ├── figures/ # 清理数据生成的图表
-│ ├── eda_figures/ # 分析数据生成的图表
-│ │ ├── 01_outcome_overview.png # 试验结果分布 
-│ │ ├── 02_phase_analysis.png # 阶段分析 
-│ │ ├── 03_temporal_trends.png # 时间趋势 
-│ │ ├── 04_sponsor_analysis.png # 申办方分析 
-│ │ ├── 05_therapy_analysis.png # 疗法分析 
-│ │ ├── 06_enrollment_analysis.png # 入组规模分析 
-│ │ ├── 07_phase_sponsor_heatmap.png # 阶段×申办方热力图 
-│ │ └── 08_duration_analysis.png # 试验周期分析 
-│ └── reports/ # 分析报告
-└── requirements.txt # 依赖库清单
+nsclc-clinical-trials-analysis/
+├── README.md                      # 项目主页
+├── LICENSE                        # MIT
+├── .gitignore
+└── clinical_trials_project/       # 代码与数据根目录（复现请从这里 cd 进入）
+    ├── requirements.txt           # 依赖库清单（pip install -r requirements.txt）
+    ├── data/
+    │   ├── ctg-studies.csv        # 原始数据（ClinicalTrials.gov 下载，已随仓库提供）
+    │   └── nsclc_cleaned.csv      # 02 清洗后的数据
+    ├── scripts/
+    │   ├── 01_data_exploration.py  # 探索原始数据
+    │   ├── 02_data_cleaning.py     # 清洗 → data/nsclc_cleaned.csv
+    │   └── 03_eda_analysis.py      # EDA → 8 张核心图表
+    └── outputs/
+        ├── figures/                # 01 探索阶段图表
+        ├── eda_figures/            # 03 核心图表（01_~08_*.png）
+        └── reports/                # Markdown / CSV 报告
 
 
 ## 🚀 如何复现
-1. 克隆仓库：`git clone https://github.com/你的用户名/clinical-trials-analysis.git`
-2. 安装依赖：`pip install -r requirements.txt`
-3. 从ClinicalTrials.gov下载数据并放入`data/`文件夹
-4. 依次运行：
+> 数据已随仓库提供（`clinical_trials_project/data/ctg-studies.csv`），无需自行下载即可复现。
+
+1. 克隆仓库：`git clone https://github.com/wtang5407-source/nsclc-clinical-trials-analysis.git`
+2. 进入项目目录：`cd nsclc-clinical-trials-analysis/clinical_trials_project`
+3. 安装依赖：`pip install -r requirements.txt`
+4. 依次运行（按顺序；02 的产物供 03 使用）：
    ```bash
    python scripts/01_data_exploration.py
    python scripts/02_data_cleaning.py
    python scripts/03_eda_analysis.py
    ```
+图表输出在 `outputs/eda_figures/`，报告在 `outputs/reports/`。
 
 
 ## 📊 关键图表预览
@@ -111,7 +111,7 @@ clinical-trials-analysis/
 |:---|:---|:---|:---|
 | **01** | `01_outcome_overview.png` | NSCLC临床试验结果分布 | 59.9%进行中，成功率仅10.9%，Failed率14.3%超过Completed率 |
 | **02** | `02_phase_analysis.png` | 试验阶段分布与各Phase成功率 | Phase 2占44.1%最多；Phase 2/3成功率60.0%最高，Phase 1/2仅32.7% |
-| **03** | `03_temporal_trends.png` | 年度启动趋势与成功率变化（2019-2025） | 成功率从2019年63.6%持续下滑至2025年11.1% |
+| **03** | `03_temporal_trends.png` | 年度启动趋势与成功率变化（2019-2025） | 成功率从2019年63.6%变化至2025年11.1%（近期受右删失影响，见"发现一"方法学说明） |
 | **04** | `04_sponsor_analysis.png` | 申办方类型分布与成功率对比 | Big Pharma成功率45.6%，学术机构44.6%，Biotech最低37.5% |
 | **05** | `05_therapy_analysis.png` | 疗法类型分布与成功率（Top 6） | 联合疗法占78.4%；靶向治疗成功率71.4%最高但仅占1.5% |
 | **06** | `06_enrollment_analysis.png` | 入组规模分布及与成功率关系 | 规模与成功率强正相关，>1000人成功率100%，<50人仅42.2% |

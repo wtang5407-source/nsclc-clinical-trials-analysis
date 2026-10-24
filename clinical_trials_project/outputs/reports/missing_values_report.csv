@@ -1,8 +1,8 @@
 ,字段类型,非空数量,缺失数量,缺失百分比,重要性
-Results First Posted,object,226,2215,90.74,低
-Study Documents,object,258,2183,89.43,低
-Other Outcome Measures,object,262,2179,89.27,低
-Acronym,object,616,1825,74.76,低
-Collaborators,object,689,1752,71.77,低
-Secondary Outcome Measures,object,2237,204,8.36,低
-Locations,object,2248,193,7.91,低
+Results First Posted,str,226,2215,90.74,低
+Study Documents,str,258,2183,89.43,低
+Other Outcome Measures,str,262,2179,89.27,低
+Acronym,str,616,1825,74.76,低
+Collaborators,str,689,1752,71.77,低
+Secondary Outcome Measures,str,2237,204,8.36,低
+Locations,str,2248,193,7.91,低

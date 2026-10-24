@@ -14,7 +14,13 @@ from datetime import datetime
 # ============================================
 
 sns.set_style("whitegrid")
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei']
+# 跨平台中文字体回退：Windows / macOS / Linux 尽量都能正常显示中文
+plt.rcParams['font.sans-serif'] = [
+    'SimHei', 'Microsoft YaHei',                  # Windows
+    'PingFang SC', 'Heiti SC', 'Arial Unicode MS', # macOS
+    'Noto Sans CJK SC', 'WenQuanYi Micro Hei',     # Linux
+    'sans-serif',
+]
 plt.rcParams['axes.unicode_minus'] = False
 plt.rcParams['figure.figsize'] = (12, 6)
 plt.rcParams['figure.dpi'] = 100
@@ -307,7 +313,7 @@ def analyze_temporal_trends(df):
     df['StartMonth'] = df['StartDate_Parsed'].dt.month
 
     # 过滤合理年份
-    valid_mask = (df['StartYear'] >= 2015) & (df['StartYear'] <= 2025)
+    valid_mask = (df['StartYear'] >= 2019) & (df['StartYear'] <= 2025)
     df_valid = df[valid_mask].copy()
 
     year_counts = df_valid['StartYear'].value_counts().sort_index()
@@ -444,7 +450,7 @@ def generate_report(df, missing_df, temporal_data, outcome_counts):
 def main():
     """主执行函数"""
     # 1. 加载
-    df = load_and_validate_data('ctg-studies.csv')
+    df = load_and_validate_data('data/ctg-studies.csv')
 
     # 2. 缺失值
     missing_df = analyze_missing_values(df)
@@ -470,7 +476,7 @@ def main():
     if outcome_counts is not None:
         print(f"  - Completed率: {outcome_counts.get('Completed', 0) / len(df) * 100:.1f}%")
         print(f"  - Failed率: {outcome_counts.get('Failed', 0) / len(df) * 100:.1f}%")
-    print(f"\n下一步: 运行数据清洗脚本 -> SQL窗口函数分析")
+    print(f"\n下一步: 运行数据清洗脚本 02_data_cleaning.py")
 
 
 if __name__ == "__main__":

@@ -16,8 +16,8 @@ warnings.filterwarnings('ignore')
 # 配置
 # ============================================
 
-INPUT_FILE = 'ctg-studies.csv'
-OUTPUT_FILE = 'nsclc_cleaned.csv'
+INPUT_FILE = 'data/ctg-studies.csv'
+OUTPUT_FILE = 'data/nsclc_cleaned.csv'
 
 # 医学配色（用于后续可视化）
 MEDICAL_PALETTE = {
@@ -441,5 +441,5 @@ for stype in df_output['SPONSOR_TYPE'].value_counts().head(4).index:
     print(f"   {stype}: {count} ({pct:.1f}%)")
 
 print("\n" + "=" * 70)
-print("下一步: SQL窗口函数分析 / Pandas深度探索")
+print("下一步: 运行 03_eda_analysis.py")
 print("=" * 70)

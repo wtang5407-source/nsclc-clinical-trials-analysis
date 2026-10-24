@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -17,7 +16,13 @@ warnings.filterwarnings('ignore')
 # ============================================
 
 plt.style.use('seaborn-v0_8-whitegrid')
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei']
+# 跨平台中文字体回退：Windows / macOS / Linux 尽量都能正常显示中文
+plt.rcParams['font.sans-serif'] = [
+    'SimHei', 'Microsoft YaHei',                  # Windows
+    'PingFang SC', 'Heiti SC', 'Arial Unicode MS', # macOS
+    'Noto Sans CJK SC', 'WenQuanYi Micro Hei',     # Linux
+    'sans-serif',
+]
 plt.rcParams['axes.unicode_minus'] = False
 plt.rcParams['figure.dpi'] = 150
 
@@ -47,7 +52,7 @@ print("=" * 70)
 # 1. 加载数据
 # ============================================
 
-df = pd.read_csv('nsclc_cleaned.csv', parse_dates=['START_DATE'])
+df = pd.read_csv('data/nsclc_cleaned.csv', parse_dates=['START_DATE'])
 
 print(f"\n数据集: {len(df)}条记录")
 print(f"时间范围: {df['START_YEAR'].min():.0f}-{df['START_YEAR'].max():.0f}")
